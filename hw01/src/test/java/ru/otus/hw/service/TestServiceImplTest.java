@@ -11,11 +11,11 @@ import static org.mockito.Mockito.verify;
 
 class TestServiceImplTest {
 
-    IOService ioService;
+    private IOService ioService;
 
-    QuestionDao questionDao;
+    private QuestionDao questionDao;
 
-    TestService testService;
+    private TestService testService;
 
     @BeforeEach
     void setUp() {
