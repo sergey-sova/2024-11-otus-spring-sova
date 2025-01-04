@@ -2,10 +2,11 @@ package ru.otus.hw.dao;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import ru.otus.hw.config.AppProperties;
 import ru.otus.hw.config.TestFileNameProvider;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 class CsvQuestionDaoTest {
 
@@ -13,7 +14,8 @@ class CsvQuestionDaoTest {
 
     @BeforeEach
     void setUp() {
-        fileNameProvider = new AppProperties(3, "questions.csv");
+        fileNameProvider = mock(TestFileNameProvider.class);
+        when(fileNameProvider.getTestFileName()).thenReturn("questions.csv");
     }
 
     @Test
