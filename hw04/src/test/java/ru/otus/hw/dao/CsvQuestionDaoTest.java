@@ -10,14 +10,14 @@ import ru.otus.hw.config.TestFileNameProvider;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-@SpringBootTest
+@SpringBootTest(classes = CsvQuestionDao.class)
 class CsvQuestionDaoTest {
 
     @MockBean
-    TestFileNameProvider fileNameProvider;
+    private TestFileNameProvider fileNameProvider;
 
     @Autowired
-    QuestionDao questionDao;
+    private QuestionDao questionDao;
 
     @BeforeEach
     void setUp() {

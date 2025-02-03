@@ -10,7 +10,7 @@ import ru.otus.hw.domain.Student;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 
-@SpringBootTest
+@SpringBootTest(classes = TestServiceImpl.class)
 class TestServiceImplTest {
 
     @MockBean
