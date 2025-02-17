@@ -20,12 +20,12 @@ public class JdbcGenreRepository implements GenreRepository {
 
     @Override
     public List<Genre> findAll() {
-        return jdbc.query("select * from genres", new GnreRowMapper());
+        return jdbc.query("select id, name from genres", new GnreRowMapper());
     }
 
     @Override
     public List<Genre> findAllByIds(Set<Long> ids) {
-        return jdbc.query("select * from genres where id in (:ids)", Map.of("ids", ids), new GnreRowMapper());
+        return jdbc.query("select id, name from genres where id in (:ids)", Map.of("ids", ids), new GnreRowMapper());
     }
 
     private static class GnreRowMapper implements RowMapper<Genre> {

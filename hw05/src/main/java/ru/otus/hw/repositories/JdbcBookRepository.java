@@ -2,6 +2,7 @@ package ru.otus.hw.repositories;
 
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.ResultSetExtractor;
@@ -30,7 +31,7 @@ public class JdbcBookRepository implements BookRepository {
     @Override
     public Optional<Book> findById(long id) {
         String sql = """
-                 select * from books
+                 select books.id, title, author_id, full_name, genre_id, name from books
                  left join authors on authors.id = books.author_id
                  left join books_genres on books_genres.book_id = books.id
                  left join genres on genres.id = books_genres.genre_id
@@ -63,7 +64,7 @@ public class JdbcBookRepository implements BookRepository {
 
     private List<Book> getAllBooksWithoutGenres() {
         String sql = """
-                    select * from books
+                    select books.id, title, author_id, full_name from books
                     left join authors on authors.id = books.author_id
                 """;
         return jdbc.query(sql, new BookRowMapper());
@@ -76,15 +77,12 @@ public class JdbcBookRepository implements BookRepository {
 
     private void mergeBooksInfo(List<Book> booksWithoutGenres, List<Genre> genres,
                                 List<BookGenreRelation> relations) {
-        booksWithoutGenres.forEach(book -> {
-            List<Genre> bookGenres = relations.stream()
-                    .filter(relation -> book.getId() == relation.bookId)
-                    .map(relation -> genres.stream()
-                                .filter(g -> relation.genreId == g.getId())
-                                .findFirst()
-                                .get())
-                    .toList();
-            book.setGenres(bookGenres);
+        Map<Long, Book> bookMap = booksWithoutGenres.stream().collect(Collectors.toMap(Book::getId, b -> b));
+        Map<Long, Genre> genreMap = genres.stream().collect(Collectors.toMap(Genre::getId, g -> g));
+        relations.forEach(relation -> {
+            Book book = bookMap.get(relation.bookId);
+            Genre genre = genreMap.get(relation.genreId);
+            book.getGenres().add(genre);
         });
     }
 
@@ -135,7 +133,8 @@ public class JdbcBookRepository implements BookRepository {
             Book book = new Book();
             book.setId(rs.getLong("books.id"));
             book.setTitle(rs.getString("title"));
-            book.setAuthor(new Author(rs.getLong("authors.id"), rs.getString("full_name")));
+            book.setAuthor(new Author(rs.getLong("author_id"), rs.getString("full_name")));
+            book.setGenres(new ArrayList<>());
             return book;
         }
     }
@@ -152,11 +151,11 @@ public class JdbcBookRepository implements BookRepository {
                     book = new Book();
                     book.setId(rs.getLong("books.id"));
                     book.setTitle(rs.getString("title"));
-                    book.setAuthor(new Author(rs.getLong("authors.id"), rs.getString("full_name")));
+                    book.setAuthor(new Author(rs.getLong("author_id"), rs.getString("full_name")));
                     book.setGenres(new ArrayList<>());
                 }
                 Genre genre = new Genre();
-                genre.setId(rs.getLong("genres.id"));
+                genre.setId(rs.getLong("genre_id"));
                 genre.setName(rs.getString("name"));
                 book.getGenres().add(genre);
             }
