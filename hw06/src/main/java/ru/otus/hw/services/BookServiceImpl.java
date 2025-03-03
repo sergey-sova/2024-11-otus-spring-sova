@@ -1,5 +1,6 @@
 package ru.otus.hw.services;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.exceptions.EntityNotFoundException;
@@ -14,8 +15,9 @@ import java.util.Set;
 
 import static org.springframework.util.CollectionUtils.isEmpty;
 
-@RequiredArgsConstructor
 @Service
+@Transactional
+@RequiredArgsConstructor
 public class BookServiceImpl implements BookService {
     private final AuthorRepository authorRepository;
 

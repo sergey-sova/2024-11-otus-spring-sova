@@ -1,5 +1,6 @@
 package ru.otus.hw.services;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ru.otus.hw.models.Author;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
+@Transactional
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
 
