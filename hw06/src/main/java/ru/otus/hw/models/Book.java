@@ -19,11 +19,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "books")
 @NamedEntityGraph(name = "books-entity-graph",
-        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genres")})
+        attributeNodes = {@NamedAttributeNode("author")})
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -39,6 +41,7 @@ public class Book {
     @JoinColumn(name = "author_id")
     private Author author;
 
+    @Fetch(FetchMode.SUBSELECT)
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "books_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
