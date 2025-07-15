@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Optional;
 import ru.otus.hw.models.Comment;
 
-public record CommentDto (long id, BookDto book, String text) {
+public record CommentDto (long id, long bookId, String text) {
 
     public static CommentDto from(Comment comment) {
-        return new CommentDto(comment.getId(), BookDto.from(comment.getBook()), comment.getText());
+        return new CommentDto(comment.getId(), comment.getBook().getId(), comment.getText());
     }
 
     public static Optional<CommentDto> from(Optional<Comment> comment) {

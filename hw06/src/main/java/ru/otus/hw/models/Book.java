@@ -24,6 +24,8 @@ import org.hibernate.annotations.FetchMode;
 
 @Entity
 @Table(name = "books")
+@NamedEntityGraph(name = "book-entity-graph",
+        attributeNodes = {@NamedAttributeNode("author"), @NamedAttributeNode("genres")})
 @NamedEntityGraph(name = "books-entity-graph",
         attributeNodes = {@NamedAttributeNode("author")})
 @Getter

@@ -20,7 +20,6 @@ public class CommentServiceImpl implements CommentService {
 
     private final CommentRepository commentRepository;
 
-    @Transactional(readOnly = true)
     @Override
     public Optional<CommentDto> findById(long id) {
         return CommentDto.from(commentRepository.findById(id));

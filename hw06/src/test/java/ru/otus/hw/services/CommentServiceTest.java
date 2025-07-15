@@ -12,10 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.annotation.Import;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.otus.hw.dto.AuthorDto;
-import ru.otus.hw.dto.BookDto;
 import ru.otus.hw.dto.CommentDto;
-import ru.otus.hw.dto.GenreDto;
 import ru.otus.hw.repositories.JpaBookRepository;
 import ru.otus.hw.repositories.JpaCommentRepository;
 
@@ -32,13 +29,10 @@ class CommentServiceTest {
     @Autowired
     private CommentService commentService;
 
-    private BookDto book;
-
     private List<CommentDto> comments;
 
     @BeforeEach
     void setUp() {
-        book = getBook();
         comments = getComments();
     }
 
@@ -60,15 +54,9 @@ class CommentServiceTest {
         actualBookComments.forEach(System.out::println);
     }
 
-    private static BookDto getBook() {
-        AuthorDto author = new AuthorDto(1, "Author_1");
-        List<GenreDto> genres = List.of(new GenreDto(1, "Genre_1"), new GenreDto(2, "Genre_2"));
-        return new BookDto(1, "BookTitle_1", author, genres);
-    }
-
     private static List<CommentDto> getComments() {
         return IntStream.range(1, 3).boxed()
-                .map(id -> new CommentDto(id, getBook(), "Comment_1_" + id))
+                .map(id -> new CommentDto(id, 1, "Comment_1_" + id))
                 .toList();
     }
 }
