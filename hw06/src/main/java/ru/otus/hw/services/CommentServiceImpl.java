@@ -25,13 +25,8 @@ public class CommentServiceImpl implements CommentService {
         return CommentDto.from(commentRepository.findById(id));
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<CommentDto> findByBookId(long bookId) {
-        Optional<Book> book = bookRepository.findById(bookId);
-        if (book.isEmpty()) {
-            throw new EntityNotFoundException("Book with id %d not found".formatted(bookId));
-        }
         return CommentDto.from(commentRepository.findByBookId(bookId));
     }
 
