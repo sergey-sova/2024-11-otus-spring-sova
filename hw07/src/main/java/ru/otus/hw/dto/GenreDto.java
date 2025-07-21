@@ -1,0 +1,16 @@
+package ru.otus.hw.dto;
+
+import java.util.Collection;
+import java.util.List;
+import ru.otus.hw.models.Genre;
+
+public record GenreDto (long id, String name) {
+
+    public static GenreDto from(Genre genre) {
+        return new GenreDto(genre.getId(), genre.getName());
+    }
+
+    public static List<GenreDto> from(Collection<Genre> genres) {
+        return genres.stream().map(GenreDto::from).toList();
+    }
+}
